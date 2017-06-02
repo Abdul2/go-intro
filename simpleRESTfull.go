@@ -16,8 +16,8 @@ type Person struct {
 }
 
 type Event struct {
-	Date      string `json:"date,omitempty"`
-	Eventtype string `json:"eventtype,omitempty"`
+	Date      string `json:"city,omitempty"`
+	Eventtype string `json:"state,omitempty"`
 }
 
 var people []Person
@@ -59,11 +59,10 @@ func DeletePersonEndpoint(w http.ResponseWriter, req *http.Request) {
 	json.NewEncoder(w).Encode(people)
 }
 
-
-
 func main() {
 	router := mux.NewRouter()
-	people = append(people, Person{Personid: "1", Object: "passport", Location: "London", Event: &Event{Date: "1/2/2003", Eventtype: "application"}})
+	//people = append(people, Person{Personid: "1", Object: "passport", Location: "London", Event: &Event{Date: "Dublin", Eventtype: "CA"}})
+	people = Readdata("data.json")
 	router.HandleFunc("/people", GetPeopleEndpoint).Methods("GET")
 	router.HandleFunc("/people/{id}", GetPersonEndpoint).Methods("GET")
 	router.HandleFunc("/people/{id}", CreatePersonEndpoint).Methods("POST")
