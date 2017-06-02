@@ -6,21 +6,11 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	"github.com/Abdul2/readdata"
 )
 
-type Person struct {
-	Personid string `json:"personid,omitempty"`
-	Object   string `json:"object,omitempty"`
-	Location string `json:"location,omitempty"`
-	Event    *Event `json:"event,omitempty"`
-}
-
-type Event struct {
-	Date      string `json:"city,omitempty"`
-	Eventtype string `json:"state,omitempty"`
-}
-
-var people []Person
+var people []readdata.Person
 
 func GetPersonEndpoint(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
@@ -30,7 +20,7 @@ func GetPersonEndpoint(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
-	json.NewEncoder(w).Encode(&Person{})
+	json.NewEncoder(w).Encode(&readdata.Person{})
 }
 
 func GetPeopleEndpoint(w http.ResponseWriter, req *http.Request) {
@@ -39,7 +29,7 @@ func GetPeopleEndpoint(w http.ResponseWriter, req *http.Request) {
 
 func CreatePersonEndpoint(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
-	var person Person
+	var person readdata.Person
 	_ = json.NewDecoder(req.Body).Decode(&person)
 	person.Personid = params["personid"]
 	people = append(people, person)
@@ -61,8 +51,7 @@ func DeletePersonEndpoint(w http.ResponseWriter, req *http.Request) {
 
 func main() {
 	router := mux.NewRouter()
-	//people = append(people, Person{Personid: "1", Object: "passport", Location: "London", Event: &Event{Date: "Dublin", Eventtype: "CA"}})
-	people = Readdata("data.json")
+	people = readdata.Readdata("data.json")
 	router.HandleFunc("/people", GetPeopleEndpoint).Methods("GET")
 	router.HandleFunc("/people/{id}", GetPersonEndpoint).Methods("GET")
 	router.HandleFunc("/people/{id}", CreatePersonEndpoint).Methods("POST")
