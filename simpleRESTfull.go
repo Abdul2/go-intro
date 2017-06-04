@@ -1,3 +1,4 @@
+// this program will be used what internal training to show features of go
 package main
 
 import (
@@ -10,8 +11,10 @@ import (
 	"github.com/Abdul2/readdata"
 )
 
+// Poeple holds records
 var people []readdata.Person
 
+//GetPersonEndpoint returns json record of requested id that
 func GetPersonEndpoint(w http.ResponseWriter, req *http.Request) {
 	params := mux.Vars(req)
 	for _, record := range people {

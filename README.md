@@ -36,3 +36,8 @@ simple go programme to be used as part of internal training.
 ]'''
 
  in http://www.json-generator.com/
+
+
+ ### todo
+
+ -docs
